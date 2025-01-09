@@ -1,0 +1,399 @@
+@use 'sass:map';
+@use 'sass:math';
+@use 'variables' as *;
+
+// ================================== //
+// Access nested variable maps values //
+// ================================== //
+@function ss-var($variable, $keys...) {
+  $value: $variable;
+
+  @each $key in $keys {
+    $value: map-get($value, $key);
+  }
+
+  @return $value;
+}
+// ======================================= //
+// Access deep nested variable maps values //
+// ======================================= //
+@function ss-var-deep($variable, $keys...) {
+  $value: $variable;
+
+  @each $key in $keys {
+    @if type-of($value) == 'map' {
+      // Если значение - это карта, продолжаем углубляться
+      $value: map-get($value, $key);
+    } @else {
+      // Если мы не находим карту, выводим ошибку
+      @error "Key #{$key} does not exist in the map or is not a map.";
+    }
+  }
+
+  @return $value;
+}
+// ================================= //
+// String replace used for font face //
+// ================================= //
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(
+        str-slice($string, $index + str-length($search)),
+        $search,
+        $replace
+      );
+  }
+
+  @return $string;
+}
+// ========================= //
+// Strip units from a number //
+// ==========================//
+@function strip-unit($num) {
+  @return math.div($num, $num * 0 + 1);
+}
+
+// ================================================== //
+// Create flat Sass variables from nested maps        //
+// This function flattens a nested map of variables   //
+// into a series of individual variables with keys    //
+// concatenated to reflect their structure.           //
+// ================================================== //
+@function generate-flat-vars($variables, $prefix: '') {
+  $flat-vars: (); // Инициализация пустой карты
+
+  @each $key, $value in $variables {
+    @if type-of($value) == 'map' {
+      // Если значение - это карта, рекурсивно вызываем функцию
+      $flat-vars: map-merge(
+        $flat-vars,
+        generate-flat-vars($value, '#{$prefix}#{$key}-')
+      );
+    } @else {
+      // Если это не карта, создаем переменную
+      $var-name: '#{$prefix}#{$key}';
+      $flat-vars: map-merge(
+        $flat-vars,
+        (
+          $var-name: $value
+        )
+      );
+    }
+  }
+
+  // @debug $flat-vars;
+  @return $flat-vars; // Возвращаем собранную карту
+}
+// ================================================== //
+// Flatten variables and create them as flat Sass variables //
+// ================================================== //
+
+// ================================================== //
+// Сonvert a value to rem units based on a base value //
+// ================================================== //
+@function px-to-rem($value, $base-value: $rem-base) {
+  $value: math.div(strip-unit($value), strip-unit($base-value)) * 1rem;
+  @if ($value == 0rem) {
+    $value: 0;
+  }
+  // Turn 0rem into 0
+  @return $value;
+}
+// ================================================== //
+// Сonvert a value to em units based on a base value //
+// ================================================== //
+@function px-to-em($value, $base-value: $rem-base) {
+  $value: math.div(strip-unit($value), strip-unit($base-value)) * 1em;
+  @if ($value == 0em) {
+    $value: 0;
+  }
+  // Turn 0em into 0
+  @return $value;
+}
+// =================================================== //
+// Сalculate multiple rem values from a list of values //
+// =================================================== //
+@function px-to-rem-multiple($values, $base-value: $rem-base) {
+  $max: length($values);
+  @if $max == 1 {
+    @return px-to-rem(nth($values, 1), $base-value);
+  }
+  $remValues: ();
+  @for $i from 1 through $max {
+    $remValues: append($remValues, px-to-rem(nth($values, $i), $base-value));
+  }
+  @return $remValues;
+}
+// =================================================== //
+// Сalculate multiple em values from a list of values //
+// =================================================== //
+@function px-to-em-multiple($values, $base-value: $rem-base) {
+  $max: length($values);
+  @if $max == 1 {
+    @return px-to-em(nth($values, 1), $base-value);
+  }
+  $emValues: ();
+  @for $i from 1 through $max {
+    $emValues: append($emValues, px-to-em(nth($values, $i), $base-value));
+  }
+  @return $emValues;
+}
+// =========================================== //
+// Calculate viewport width for target element //
+// =========================================== //
+@function px-to-vw($target-width, $design-width) {
+  $args: $target-width, $design-width;
+  $result: null;
+
+  @each $arg in $args {
+    @if not(
+      (type-of($arg) == 'string' and str-index($arg, 'var(')) or
+        type-of($arg) ==
+        'number'
+    )
+    {
+      @error "Оба аргумента должны быть числами или значениями с единицей измерения (например, px), но не CSS переменными.";
+    }
+
+    // If the argument is a CSS variable or a value with units
+    @if type-of($arg) == 'string' and str-index($arg, 'var(') {
+      $result: calc(#{$target-width} / #{$design-width} * 100vw);
+    }
+  }
+
+  // If neither argument is a CSS variable
+  @if $result == null {
+    $result: math.div($target-width, $design-width) * 100vw;
+  }
+
+  @return $result;
+}
+
+// ============================================ //
+// Calculate viewport height for target element //
+// ============================================ //
+// @function px-to-vh($target-height, $design-height) {
+//   $ratio: math.div($target-height, $design-height);
+//   @return $ratio * 100vh;
+// }
+@function px-to-vh($target-height, $design-height) {
+  // Define an array of arguments and initialize the result variable
+  $args: $target-height, $design-height;
+  $result: null;
+
+  // Iterate over each argument to validate its type
+  @each $arg in $args {
+    // Check if the argument is neither a CSS variable nor a number
+    @if not(
+      (type-of($arg) == 'string' and str-index($arg, 'var(')) or
+        type-of($arg) ==
+        'number'
+    )
+    {
+      @error "Both arguments must be numbers or values with units (e.g., px), but not CSS variables.";
+    }
+
+    // If the argument is a CSS variable or a value with units
+    @if type-of($arg) == 'string' and str-index($arg, 'var(') {
+      $result: calc(#{$target-height} / #{$design-height} * 100vh);
+    }
+  }
+
+  // If neither argument is a CSS variable, calculate the ratio
+  @if $result == null {
+    $result: math.div($target-height, $design-height) * 100vh;
+  }
+
+  // Return the calculated result
+  @return $result;
+}
+
+// @function calc-rel-width($target-width, $parent-width) {
+//   @return math.div($target-width, $parent-width) * 100%;
+// }
+@function calc-rel-width($target-width, $parent-width) {
+  // Define an array of arguments and initialize the result variable
+  $args: $target-width, $parent-width;
+  $result: null;
+
+  // Iterate over each argument to validate its type
+  @each $arg in $args {
+    // Check if the argument is neither a CSS variable nor a number
+    @if not(
+      (type-of($arg) == 'string' and str-index($arg, 'var(')) or
+        type-of($arg) ==
+        'number'
+    )
+    {
+      @error "Both arguments must be numbers or values with units (e.g., px), but not CSS variables.";
+    }
+
+    // If the argument is a CSS variable or a value with units
+    @if type-of($arg) == 'string' and str-index($arg, 'var(') {
+      $result: calc(#{$target-width} / #{$parent-width} * 100%);
+    }
+  }
+
+  // If neither argument is a CSS variable, calculate the ratio
+  @if $result == null {
+    $result: math.div($target-width, $parent-width) * 100%;
+  }
+
+  // Return the calculated result
+  @return $result;
+}
+
+// To set adaptive font size based on design dimensions
+@function calc-root-font-size(
+  $design-width,
+  $design-height,
+  $base-font-size: $rem-base
+) {
+  $vw-unit: math.div($design-width, 100);
+  $vh-unit: math.div($design-height, 100);
+
+  $scale: math.div($base-font-size, $vw-unit + $vh-unit);
+
+  @return calc(#{$scale}vw + #{$scale}vh);
+}
+
+// @function calc-scaled-vmin ($design-width, $design-height, $base-font-size: $rem-base) {
+//   $vmin-unit: math.div(min($design-width, $design-height), 100);
+//   $scale: math.div($base-font-size, $vmin-unit);
+
+//   @return calc(#{$scale}vmin);
+// }
+@function calc-scaled-vmin(
+  $design-width,
+  $design-height,
+  $base-font-size: $rem-base
+) {
+  // Define an array of arguments and initialize the result variable
+  $args: $design-width, $design-height, $base-font-size;
+  $result: null;
+
+  // Iterate over each argument to validate its type
+  @each $arg in $args {
+    // Check if the argument is neither a number nor a value with units (e.g., px, rem)
+    @if not(
+      (type-of($arg) == 'string' and str-index($arg, 'var(')) or
+        type-of($arg) ==
+        'number'
+    )
+    {
+      @error "All arguments must be numbers or values with units (e.g., px, rem), but not CSS variables.";
+    }
+
+    // If the argument is a CSS variable or a value with units
+    @if type-of($arg) == 'string' and str-index($arg, 'var(') {
+      $result: calc(
+        min(#{$design-width}, #{$design-height}) / 100 * #{$base-font-size}
+      );
+    }
+  }
+
+  // If none of the arguments is a CSS variable, proceed with normal calculation
+  @if $result == null {
+    $vmin-unit: math.div(min($design-width, $design-height), 100);
+    $scale: math.div($base-font-size, $vmin-unit);
+
+    $result: calc(#{$scale}vmin);
+  }
+
+  // Return the calculated result
+  @return $result;
+}
+
+// @function px-to-vmin($image-width, $design-width) {
+//   $ratio: math.div($image-width, $design-width);
+
+//   @return $ratio * 100vmin;
+// }
+@function px-to-vmin($image-width, $design-width) {
+  // Define an array of arguments and initialize the result variable
+  $args: $image-width, $design-width;
+  $result: null;
+
+  // Iterate over each argument to validate its type
+  @each $arg in $args {
+    // Check if the argument is neither a number nor a value with units (e.g., px)
+    @if not(
+      (type-of($arg) == 'string' and str-index($arg, 'var(')) or
+        type-of($arg) ==
+        'number'
+    )
+    {
+      @error "Both arguments must be numbers or values with units (e.g., px), but not CSS variables.";
+    }
+
+    // If the argument is a CSS variable or a value with units
+    @if type-of($arg) == 'string' and str-index($arg, 'var(') {
+      $result: calc(#{$image-width} / #{$design-width} * 100vmin);
+    }
+  }
+
+  // If neither argument is a CSS variable, calculate the ratio
+  @if $result == null {
+    $ratio: math.div($image-width, $design-width);
+    $result: $ratio * 100vmin;
+  }
+
+  // Return the calculated result
+  @return $result;
+}
+
+// @function px-to-vmax($image-width, $design-width) {
+//   $ratio: math.div($image-width, $design-width);
+
+//   @return $ratio * 100vmax;
+// }
+@function px-to-vmax($image-width, $design-width) {
+  // Define an array of arguments and initialize the result variable
+  $args: $image-width, $design-width;
+  $result: null;
+
+  // Iterate over each argument to validate its type
+  @each $arg in $args {
+    // Check if the argument is neither a number nor a value with units (e.g., px)
+    @if not(
+      (type-of($arg) == 'string' and str-index($arg, 'var(')) or
+        type-of($arg) ==
+        'number'
+    )
+    {
+      @error "Both arguments must be numbers or values with units (e.g., px), but not CSS variables.";
+    }
+
+    // If the argument is a CSS variable or a value with units
+    @if type-of($arg) == 'string' and str-index($arg, 'var(') {
+      $result: calc(#{$image-width} / #{$design-width} * 100vmax);
+    }
+  }
+
+  // If neither argument is a CSS variable, calculate the ratio
+  @if $result == null {
+    $ratio: math.div($image-width, $design-width);
+    $result: $ratio * 100vmax;
+  }
+
+  // Return the calculated result
+  @return $result;
+}
+
+// ================================================== //
+// Сonvert a value to em units based on a base value  //
+// ================================================== //
+@function px-to-scw($pixels, $design-width) {
+  @if not unitless($pixels) and unit($pixels) == 'px' {
+    @if not unitless($design-width) and unit($design-width) == 'px' {
+      @return math.div($pixels, $design-width) * 100vw;
+    } @else {
+      @error "The design width #{$design-width} must be in pixels (px).";
+    }
+  } @else {
+    @error "The value #{$pixels} must be in pixels (px).";
+  }
+}

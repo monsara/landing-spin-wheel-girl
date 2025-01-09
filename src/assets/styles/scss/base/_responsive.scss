@@ -1,0 +1,25 @@
+// Abstracts
+@use '../abstracts/' as *;
+
+html,
+body {
+  $rem-base: 16px;
+
+  font-size: clamp(10px, calc-root-font-size(390px, 844px), 16px);
+
+  @include tablet-landscape {
+    font-size: $rem-base;
+  }
+
+  @include tablet-up {
+    font-size: 20px;
+  }
+
+  @include mobile-landscape {
+    font-size: $rem-base;
+  }
+
+  @include laptop-up {
+    font-size: $rem-base;
+  }
+}

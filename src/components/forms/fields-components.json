@@ -1,0 +1,12 @@
+{
+  "gender": "SelectInput",
+  "locale": "SelectInput",
+  "language": "SelectInput",
+  "country": "SelectInput",
+  "currency": "SelectInput",
+  "agreements": "CheckboxInput",
+  "receiveEmailPromo": "CheckboxInput",
+  "receiveSmsPromo": "CheckboxInput",
+  "receiveBonus": "CheckboxInput",
+  "birthdate": "DateInput"
+}

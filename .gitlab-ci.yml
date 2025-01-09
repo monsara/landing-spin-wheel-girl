@@ -1,0 +1,52 @@
+image: 038978826977.dkr.ecr.eu-central-1.amazonaws.com/infrastructure/builder:latest
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_FORCE_HTTPS: "true"
+  VITE_REDIRECT_URL: "https://pubdev.slotsbet.io"
+  VITE_API_URL: "https://pubdev.slotsbet.io"
+
+stages:
+  - build
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+      variables:
+        IMAGE_TAG: $CI_COMMIT_BRANCH
+
+    - if: $CI_COMMIT_BRANCH == "dev"
+      when: always
+      variables:
+        IMAGE_TAG: $CI_COMMIT_BRANCH
+
+    - if: $CI_COMMIT_BRANCH =~ /tpbe-\d+/i
+      when: always
+      variables:
+        IS_TASK_BRANCH: "1"
+
+    - when: never
+
+build artifact:
+  stage: build
+  image: node:18-alpine
+  before_script:
+    - npm ci
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - ./dist
+    when: always
+    expire_in: 1 hour
+
+
+deploy to s3:
+  stage: deploy
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  script:
+    - aws s3 cp --recursive dist s3://$AWS_S3_BUCKET/

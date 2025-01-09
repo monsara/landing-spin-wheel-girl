@@ -1,0 +1,456 @@
+@use 'variables' as *;
+@use 'placeholders' as *;
+@use 'functions' as *;
+@use 'functions' as *;
+
+// ========================================== //
+// Generate CSS Variables from Sass Variables //
+// ========================================== //
+//
+// This mixin iterates through a map of Sass variables and generates
+// corresponding CSS custom properties (CSS variables). It also removes
+// units (like px, em, etc.) from the values before adding them as CSS vars.
+// Supports any level of nested maps.
+//
+// Example usage:
+//
+// $variables: (
+//   design: (
+//     w: 390px,
+//     h: 844px
+//   ),
+//   img-container: (
+//     w: 537px,
+//     h: 669px,
+//     offset: (
+//       left: 50px,
+//       top: 263px
+//     )
+//   )
+// );
+//
+// :root {
+//   @include generate-css-vars($variables);
+// }
+
+@mixin generate-css-vars($variables, $prefix: '') {
+  $new-key: null;
+
+  @each $key, $value in $variables {
+    // Создаем новый ключ с префиксом
+    @if $prefix == '' {
+      $new-key: $key;
+    } @else {
+      $new-key: #{$prefix}-#{$key};
+    }
+
+    @if type-of($value) == 'map' {
+      // Рекурсивно обрабатываем вложенные карты
+      @include generate-css-vars($value, $new-key);
+    } @else {
+      // Применяем strip-unit и создаем CSS переменную
+      --#{$new-key}: #{strip-unit($value)};
+    }
+  }
+}
+
+// ============= //
+// Media Queries //
+// ============= //
+
+// Fixed width breakpoint
+@mixin breakpoint-fixed($size) {
+  @media only screen and (width: $size) {
+    @content;
+  }
+}
+// Min-width breakpoint
+@mixin breakpoint-min($size) {
+  @media only screen and (min-width: $size) {
+    @content;
+  }
+}
+// Max-width breakpoint
+@mixin breakpoint-max($size) {
+  @media only screen and (max-width: $size) {
+    @content;
+  }
+}
+// Min and Max width breakpoint
+@mixin breakpoint-between($size-min, $size-max) {
+  @media only screen and (min-width: $size-min) and (max-width: $size-max) {
+    @content;
+  }
+}
+
+@mixin media($media) {
+  @media only screen and (max-width: $media) {
+    @content;
+  }
+}
+
+@mixin media-min($media) {
+  @media only screen and (min-width: $media) {
+    @content;
+  }
+}
+
+@mixin media-h($media) {
+  @media only screen and (max-height: $media) {
+    @content;
+  }
+}
+
+@mixin mobile-landscape {
+  @media (max-width: px-to-em(ss-var($breakpoints, '1024'))) and (max-height: px-to-em(ss-var($breakpoints, '480'))) and (orientation: landscape),
+    (max-width: px-to-em(ss-var($breakpoints, '1024'))) and (max-height: px-to-em(ss-var($breakpoints, '480'))) and (orientation: landscape) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media (max-width: px-to-em(ss-var($breakpoints, '1024'))) and (max-height: px-to-em(ss-var($breakpoints, '768'))) and (orientation: landscape) and (pointer: coarse) {
+    @content;
+  }
+}
+
+// Если высота экрана лэптопа и десктопа меньше
+// Для возврата стилей к мобильной версии
+@mixin critial-laptop-height {
+  @media (max-height: px-to-em($critical-height)) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin small-mobile {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, '360'))) {
+    @content;
+  }
+}
+
+// Большие планшеты и планшеты в альбомной ориентации (768px и больше)
+@mixin tablet-up {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, '768'))) {
+    @content;
+  }
+}
+
+// Мобильные устройства и небольшие планшеты (1025px и больше)
+@mixin laptop-up {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1025'))) {
+    @content;
+  }
+}
+
+// Большие планшеты и ноутбуки (1281px и больше)
+@mixin desktop-up {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1281'))) {
+    @content;
+  }
+}
+
+// Очень большие экраны (1441px и больше)
+@mixin extra-desktop-up {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1441'))) {
+    @content;
+  }
+}
+
+// Миксин для Small Devices (481px - 767px)
+@mixin small-mobile-only {
+  @include breakpoint-between(
+    px-to-em(ss-var($breakpoints, '481')),
+    px-to-em(ss-var($breakpoints, '768'))
+  ) {
+    @content;
+  }
+}
+
+// Большие планшеты и планшеты в альбомной ориентации (768px-1024px)
+@mixin tablet-only {
+  @include breakpoint-between(
+    px-to-em(ss-var($breakpoints, '769')),
+    px-to-em(ss-var($breakpoints, '1024'))
+  ) {
+    @content;
+  }
+}
+
+// Мобильные устройства и небольшие планшеты (1025px-1280px)
+@mixin laptop-small-desktop-only {
+  @include breakpoint-between(
+    px-to-em(ss-var($breakpoints, '1025')),
+    px-to-em(ss-var($breakpoints, '1280'))
+  ) {
+    @content;
+  }
+}
+
+// Большие планшеты и ноутбуки (1281px-1440px)
+@mixin large-desktop-only {
+  @include breakpoint-between(
+    px-to-em(ss-var($breakpoints, '1281')),
+    px-to-em(ss-var($breakpoints, '1440'))
+  ) {
+    @content;
+  }
+}
+
+// Большие планшеты и ноутбуки (1281px-1440px)
+@mixin large-desktop-down {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, '1280'))) {
+    @content;
+  }
+}
+
+// Мобильные устройства и небольшие планшеты (1025px-1280px)
+@mixin laptop-down {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, '1024'))) {
+    @content;
+  }
+}
+
+// Большие планшеты и планшеты в альбомной ориентации (768px-1024px)
+@mixin tablet-down {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, '768'))) {
+    @content;
+  }
+}
+
+// ========== //
+// Font sizes //
+// ========== //
+@mixin font-sizes($h1, $h2, $h3, $h4, $p) {
+  $font-sizes: (
+    'h1': $h1,
+    'h2': $h2,
+    'h3': $h3,
+    'h4': $h4,
+    'p': $p
+  );
+  @each $tag, $size in $font-sizes {
+    @if $tag== 'p' {
+      #{$tag},
+      span,
+      strong,
+      label,
+      a,
+      li {
+        font-size: $size;
+      }
+    } @else {
+      #{$tag} {
+        font-size: $size;
+      }
+    }
+  }
+}
+
+// ========= //
+// Font Face //
+// ========= //
+@mixin font-face(
+  $name,
+  $path,
+  $weight: null,
+  $style: null,
+  $exts: eot woff2 woff ttf svg,
+  $display: swap
+) {
+  $src: null;
+
+  $extmods: (
+    eot: '?',
+    svg: '#' + str-replace($name, ' ', '_')
+  );
+
+  $formats: (
+    otf: 'opentype',
+    ttf: 'truetype'
+  );
+
+  @each $ext in $exts {
+    $extmod: if(
+      map-has-key($extmods, $ext),
+      $ext + map-get($extmods, $ext),
+      $ext
+    );
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append(
+      $src,
+      url(quote($path + '.' + $extmod)) format(quote($format)),
+      comma
+    );
+  }
+
+  @font-face {
+    font-family: quote($name);
+    font-style: $style;
+    font-weight: $weight;
+    src: $src, local($name);
+    font-display: $display;
+  }
+}
+
+@mixin font-face-2($font-name, $file-name, $font-weight, $font-style) {
+  @font-face {
+    font-family: quote($font-name);
+    // src: url('../fonts/' + $file-name + '.ttf') format('truetype');
+    src: url('@/assets/fonts/' + $file-name + '.ttf') format('truetype');
+    font-weight: $font-weight;
+    font-style: $font-style;
+    font-display: swap;
+  }
+}
+
+// ============== //
+// Button styling //
+// ============== //
+@mixin button(
+  $width,
+  $height,
+  $bg-color,
+  $font-color,
+  $font-size,
+  $font-weight,
+  $border-radius,
+  $border-size,
+  $border-type,
+  $border-color
+) {
+  width: $width;
+  height: $height;
+  background: $bg-color;
+  color: $font-color;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  border-radius: $border-radius;
+  border: $border-size $border-type $border-color;
+  cursor: pointer;
+}
+
+// ================ //
+// Background image //
+// ================ //
+@mixin bg-img($width, $height, $url, $repeat, $size, $position) {
+  width: $width;
+  height: $height;
+  background-image: url($url);
+  background-repeat: $repeat;
+  background-size: $size;
+  background-position: $position;
+}
+
+// ======= //
+// Overlay //
+// ======= //
+@mixin overlay(
+  $z-index: -1,
+  $background: linear-gradient(0deg, rgb(0 0 0 / 0.5), rgb(0 0 0 / 0))
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: $z-index;
+    background: $background;
+  }
+}
+
+// =============== //
+// Gradient Shadow //
+// =============== //
+@mixin gradient-shadow(
+  $deg,
+  $color-1,
+  $color-2,
+  $z-index: -1,
+  $blur-1,
+  $blur-2,
+  $blur-opacity: 0.5
+) {
+  background: linear-gradient($deg, $color-1, $color-2);
+  position: relative;
+  box-shadow: unset;
+  isolation: isolate;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: $z-index;
+    background: inherit;
+  }
+  &::before {
+    filter: blur($blur-1);
+  }
+  &::after {
+    filter: blur($blur-2);
+    opacity: $blur-opacity;
+  }
+}
+
+// ======== //
+// Flex Box //
+// ======== //
+@mixin flex($justify-content, $align-items: center, $flex-direction: row) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-direction: $flex-direction;
+}
+// ==== //
+// Grid //
+// ==== //
+@mixin grid($columns, $rows, $areas, $gap: 0) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  grid-template-areas: $areas;
+  gap: $gap;
+}
+// ============================== //
+// After & Before pseudo elements //
+// ============================== //
+@mixin pseudo-elem(
+  $location: before,
+  $content: '',
+  $position: relative,
+  $top: 0,
+  $right: 0,
+  $bottom: 0,
+  $left: 0
+) {
+  &:#{$location} {
+    content: $content;
+    position: $position;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    @content;
+  }
+}
+// For checkboxes and radio buttons
+@mixin pseudo-elem-checked(
+  $location: before,
+  $content: '',
+  $position: relative,
+  $top: 0,
+  $right: 0,
+  $bottom: 0,
+  $left: 0
+) {
+  &:checked:#{$location} {
+    content: $content;
+    position: $position;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    @content;
+  }
+}

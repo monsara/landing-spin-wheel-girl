@@ -1,0 +1,3 @@
+@use "../abstracts/" as *;
+
+@include font-face($font-name, $font-path, bold, normal, (woff2, woff, ttf));

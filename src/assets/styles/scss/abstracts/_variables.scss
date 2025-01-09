@@ -1,0 +1,144 @@
+// @use "functions" as *;
+
+$rem-base: 16px;
+// ======================== //
+// Prefixes for class names //
+// ======================== //
+$prefix: 'ss-';
+// ========= //
+// Font name //
+// ========= //
+$font-name: 'Venus Rising Bold';
+$font-path: '@/assets/fonts/venus-risinghv-italic';
+$font-serif: 'sans-serif';
+$font-stack-sans: Inter, 'Segoe UI', Roboto, 'Helvetica Neue', $font-serif;
+$font-family-stack: $font-name, $font-stack-sans;
+//fonts
+$font-1: 'Venus Rising Bold';
+// ============ //
+// Font weights //
+// ============ //
+$font-weight: (
+  'thin': 100,
+  'extralight': 200,
+  'light': 300,
+  'regular': 400,
+  'medium': 500,
+  'semibold': 600,
+  'bold': 700,
+  'extrabold': 800,
+  'blackbold': 900
+);
+// ====== //
+// Colors //
+// ====== //
+$colors: (
+  // Main colors
+  primary:
+    (
+      'green': #008f70,
+      'blue': #2b777d
+    ),
+  // Secondary colors
+  secondary:
+    (
+      'lightgreen': #5fbe6e,
+      'darkblue': #2b365a,
+      'lightblue': #5fbebc,
+      'yellow': #bebe5f,
+      'red': #c94242,
+      'purple': #a35fbe
+    ),
+  // Colors used for gradient
+  gradient: (),
+  // Grayscale/Basic colors
+  neutral:
+    (
+      'black': #000000,
+      'darkgray': #343434,
+      'gray': #837f7f,
+      'lightgray': #f7f7f7,
+      'white': #ffffff
+    )
+);
+//colors
+$color-1: #000;
+$color-2: #fff;
+$color-3: #8133ff;
+$color-5: #cfff27;
+$color-6: #1a1a1a;
+$color-7: #afe000;
+$color-8: #212121;
+$color-9: #323232;
+$color-10: #030303;
+$color-11: #039be5;
+$color-12: #007ab6;
+
+$color-green: #cfff27;
+$color-green-hovered: #afe000;
+$color-purple: #8133ff;
+$color-bg: #030303;
+$color-btn-text: #1a1a1a;
+// ========================== //
+// Device breakpoints (width) //
+// ========================== //
+$breakpoints: (
+  // Mobile
+  '320': 320px,
+  '360': 360px,
+  '375': 375px,
+  '425': 425px,
+  '480': 480px,
+  // Tablets and large smartphones
+  '481': 481px,
+  '639': 639px,
+  '640': 640px,
+  '767': 767px,
+  '768': 768px,
+  // Laptops, larger tablets in landscape, and small desktops
+  '769': 769px,
+  '800': 800px,
+  '900': 900px,
+  '1024': 1024px,
+  '1025': 1025px,
+  '1279': 1279px,
+  // Larger desktops and monitors
+  '1280': 1280px,
+  '1281': 1281px,
+  '1366': 1366px,
+  '1440': 1440px,
+  '1600': 1600px,
+  '1680': 1680px,
+  '1920': 1920px,
+  '2560': 2560px
+);
+// ============================ //
+// Breakpoints for quick access //
+// ============================ //
+$xxsm: 374px;
+$xsm: 459px;
+$sm: 639px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1199px;
+$xxl: 1399px;
+$xxxl: 1919px;
+
+$critical-height: 719px;
+
+// ====== //
+// Timing //
+// ====== //
+$time-sm: 300ms;
+$time-md: 500ms;
+$time-lg: 800ms;
+$time-xl: 1100ms;
+
+// ====== //
+// Easing //
+// ====== //
+$easing: cubic-bezier(0.13, 0.39, 0.42, 1.07);
+$easing2: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+$easing3: cubic-bezier(0.67, 0.005, 0.33, 1.005);
+
+$col: calc(100vw / 12);

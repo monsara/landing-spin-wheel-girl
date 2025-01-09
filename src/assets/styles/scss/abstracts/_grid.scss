@@ -1,0 +1,100 @@
+@use "mixins" as *;
+
+.container {
+  width: 100%;
+  padding-left: percentage(1/12);
+  padding-right: percentage(1/12);
+  // @include tablet {
+  // 	// padding-left: 15px;
+  // 	// padding-right: 15px;
+  // 	padding-left: percentage(1/8);
+  // 	padding-right: percentage(1/8);
+  // }
+  @include tablet {
+    // padding-left: 15px;
+    // padding-right: 15px;
+    padding-left: percentage(1/12);
+    padding-right: percentage(1/12);
+  }
+  @include mini {
+    padding-left: percentage(1/8);
+    padding-right: percentage(1/8);
+  }
+}
+
+.container-full {
+  max-width: 100%;
+}
+
+// #region flex
+.flex_wrapper {
+  position: relative;
+  // display: -ms-flexbox;
+  // display: -webkit-flex;
+  display: flex;
+  // flex-wrap: wrap;
+  // @include mobile {
+  // 	display: block;
+  // }
+}
+.flex_jc_center {
+  justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.flex_jc_start {
+  justify-content: flex-start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+}
+.flex_jc_end {
+  justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.flex_jc_beetween {
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+}
+.flex_jc_around {
+  justify-content: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+}
+.flex_ai_center {
+  align-items: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+}
+.flex_ai_start {
+  align-items: flex-start;
+}
+.flex_ai_end {
+  align-items: flex-end;
+}
+.flex_as_start {
+  align-self: flex-start;
+}
+.flex_dir_col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.flex_dir_rev {
+  flex-direction: row-reverse;
+}
+// .nowrap{
+
+// }
+.flex_mob_column_reverse {
+  @media (max-width: $md) {
+    flex-direction: column-reverse;
+  }
+}
+.flex1 {
+  flex: 1;
+}
+// #endregion flex

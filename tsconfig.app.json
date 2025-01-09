@@ -1,0 +1,27 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.json",
+    "src/components/TelegramBtn.vue"
+  ],
+  "exclude": [
+    "src/**/__tests__/*"
+  ],
+  "compilerOptions": {
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "composite": true,
+    "noEmit": true,
+    "baseUrl": "./skeleton-vue",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  }
+}
