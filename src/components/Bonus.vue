@@ -92,8 +92,8 @@ const bonusName = computed(() => {
         display: block;
         width: px-to-rem(330px);
         height: px-to-rem(150px);
-        background: url('@/assets/images/green-light.png') center / cover
-          no-repeat;
+        // background: url('@/assets/images/green-light.png') center / cover
+        //   no-repeat;
       }
     }
 
@@ -141,13 +141,13 @@ const bonusName = computed(() => {
     &::before {
       left: px-to-rem(9px);
       top: px-to-rem(15px);
-      background-image: url('@/assets/images/sparkles-left.png');
+      // background-image: url('@/assets/images/sparkles-left.png');
     }
 
     &::after {
       top: px-to-rem(40px);
       right: px-to-rem(-15px);
-      background-image: url('@/assets/images/sparkles-right.png');
+      // background-image: url('@/assets/images/sparkles-right.png');
     }
   }
 
@@ -167,8 +167,8 @@ const bonusName = computed(() => {
       width: px-to-rem(230px);
       height: px-to-rem(150px);
 
-      background: url('@/assets/images/purple-light.png') center / cover
-        no-repeat;
+      // background: url('@/assets/images/purple-light.png') center / cover
+      //   no-repeat;
       transform: translateX(-50%) skew(15deg);
     }
   }

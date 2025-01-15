@@ -146,7 +146,7 @@ const props = defineProps({
     right: -11%;
     width: calc-rel-width(119px, 262px);
     height: calc-rel-width(76px, 262px);
-    background: url(@/assets/images/decor-elems.webp) center / cover no-repeat;
+    // background: url(@/assets/images/decor-elems.webp) center / cover no-repeat;
 
     @media screen and (max-width: 64rem) and (max-height: 28.125rem) and (orientation: landscape) {
       display: none;
