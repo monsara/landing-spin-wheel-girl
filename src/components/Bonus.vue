@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import BadgedText from '@/components/PromoBadgetText.vue'
+import BadgedText from '@/components/BadgedText.vue'
 
 const props = defineProps({
   value: {
@@ -25,6 +25,19 @@ const extractedValue = computed(() => {
   const match = props.value.match(/[\d.]+/)
   return match ? match[0] : ''
 })
+
+const bonusName = computed(() => {
+  switch (props.name) {
+    case 'депозит':
+      return 'депозит'
+    case 'fs':
+      return 'фріспінов'
+    case 'грн':
+      return 'гривень'
+    default:
+      return props.name
+  }
+})
 </script>
 
 <template>
@@ -36,11 +49,11 @@ const extractedValue = computed(() => {
     <BadgedText v-if="props.withLabel" tag="span" color="purple"
       >Бонус</BadgedText
     >
-    <span class="bonus__value"
-      >+<span class="bonus__value-extracted">{{ extractedValue }}</span
-      ><template v-if="props.name === 'депозит'">%</template>
+    <span class="bonus__value">
+      +<span class="bonus__value-extracted">{{ extractedValue }}</span>
+      <template v-if="props.name === 'депозит'">%</template>
     </span>
-    <span class="bonus__name">{{ name }}</span>
+    <span class="bonus__name">{{ bonusName }}</span>
   </component>
 </template>
 

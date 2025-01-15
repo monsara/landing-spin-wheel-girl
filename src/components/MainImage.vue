@@ -1,22 +1,24 @@
 <script setup></script>
 
 <template>
-  <div class="image-container">
-    <picture class="image-container__main-image">
-      <source
-        media="(max-width: 1024px) or (max-height: 719px)"
-        srcset="@/assets/images/main-img-mobile.webp"
-      />
-      <source
-        media="(min-width: 64.025em) and (orientation: landscape)"
-        srcset="@/assets/images/main-img-wide.webp"
-      />
-      <img
-        src="@/assets/images/main-img-mobile.webp"
-        alt="Зображення Зевса"
-        loading="eager"
-      />
-    </picture>
+  <div>
+    <div class="image-container">
+      <picture class="image-container__main-image">
+        <source
+          media="(max-width: 1024px) or (max-height: 719px)"
+          srcset="@/assets/images/main-img-mobile.webp"
+        />
+        <source
+          media="(min-width: 64.025em) and (orientation: landscape)"
+          srcset="@/assets/images/main-img-wide.webp"
+        />
+        <img
+          src="@/assets/images/main-img-mobile.webp"
+          alt="Зображення дівчини"
+          loading="eager"
+        />
+      </picture>
+    </div>
   </div>
 </template>
 
@@ -30,11 +32,11 @@ $variables: (
     h: 844px
   ),
   img-container: (
-    w: 537px,
-    h: 669px,
+    w: 412px,
+    h: 529px,
     offset: (
       bottom: 0,
-      right: -200px
+      right: -95px
     )
   )
 );
@@ -45,30 +47,8 @@ $flat-vars: generate-flat-vars($variables);
   position: absolute;
   bottom: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-bottom'));
   right: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-right'));
-  z-index: -2;
-  width: px-to-rem(ss-var($flat-vars, 'img-container-w'));
-
-  @include tablet-landscape {
-    $variables: (
-      design: (
-        w: 1024px,
-        h: 768px
-      ),
-      img-container: (
-        w: 537px,
-        h: 669px,
-        offset: (
-          bottom: 0,
-          right: 0
-        )
-      )
-    );
-
-    $flat-vars: generate-flat-vars($variables);
-
-    bottom: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-bottom'));
-    right: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-right'));
-  }
+  z-index: -1;
+  width: px-to-rem(ss-var-deep($flat-vars, 'img-container-w'));
 
   @include laptop-up {
     $variables: (
@@ -77,48 +57,41 @@ $flat-vars: generate-flat-vars($variables);
         h: 900px
       ),
       img-container: (
-        w: 827px,
-        h: 877px,
+        w: 703px,
+        h: 900px,
         offset: (
-          bottom: 0,
-          right: 0
+          bottom: -94px,
+          right: 70px
         )
       )
     );
 
     $flat-vars: generate-flat-vars($variables);
 
+    right: calc(
+      px-to-vw(
+          ss-var-deep($flat-vars, 'img-container-offset-right'),
+          ss-var-deep($flat-vars, 'img-container-w')
+        ) + 2dvh
+    );
     bottom: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-bottom'));
-    right: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-right'));
-    width: px-to-vmax(
+    width: px-to-vw(
       ss-var-deep($flat-vars, 'img-container-w'),
       ss-var-deep($flat-vars, 'design-w')
     );
-    // max-width: px-to-rem(ss-var-deep($flat-vars, 'img-container-w'));
-    max-height: 100%;
-    padding-top: px-to-rem(26px);
+    max-width: px-to-rem(ss-var-deep($flat-vars, 'img-container-w'));
+    max-height: px-to-vmin(
+      ss-var-deep($flat-vars, 'img-container-h'),
+      ss-var-deep($flat-vars, 'design-h')
+    );
   }
 
   @include critial-laptop-height {
-    $variables: (
-      design: (
-        w: 1024px,
-        h: 768px
-      ),
-      img-container: (
-        w: 537px,
-        h: 669px,
-        offset: (
-          bottom: 0,
-          right: 0
-        )
-      )
-    );
-
-    $flat-vars: generate-flat-vars($variables);
-
     bottom: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-bottom'));
     right: px-to-rem(ss-var-deep($flat-vars, 'img-container-offset-right'));
+    z-index: -1;
+    width: px-to-rem(ss-var-deep($flat-vars, 'img-container-w'));
+    max-height: initial;
   }
 
   &__main-image,
@@ -129,13 +102,6 @@ $flat-vars: generate-flat-vars($variables);
     height: 100%;
     object-fit: cover;
     z-index: 1;
-    animation: animateMainImage 7s linear infinite alternate;
-  }
-
-  @keyframes growDecorElems {
-    to {
-      transform: scale(1.2);
-    }
   }
 
   @keyframes slotsSlideBounceOutMobile {
@@ -177,12 +143,6 @@ $flat-vars: generate-flat-vars($variables);
     }
     100% {
       transform: translate(-50%, 100%) rotate($angle);
-    }
-  }
-
-  @keyframes animateMainImage {
-    100% {
-      transform: scale(1.02);
     }
   }
 }

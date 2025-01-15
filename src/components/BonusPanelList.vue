@@ -1,5 +1,5 @@
 <script setup>
-import PromoBonusPlate from '@/components/PromoBonusPlate.vue'
+import BonusPlate from '@/components/BonusPlate.vue'
 
 const props = defineProps({
   bonuses: {
@@ -11,14 +11,14 @@ const props = defineProps({
 
 <template>
   <ul class="bonus-panel-list">
-    <PromoBonusPlate
+    <BonusPlate
       tag="li"
       class="bonus-panel-list__item"
       :bonus="props.bonuses[0]"
       type="deposit"
     />
 
-    <PromoBonusPlate
+    <BonusPlate
       tag="li"
       class="bonus-panel-list__item"
       :bonus="props.bonuses[1]"
@@ -29,7 +29,7 @@ const props = defineProps({
       Додатковий приз
     </li>
 
-    <PromoBonusPlate
+    <BonusPlate
       tag="li"
       class="bonus-panel-list__item bonus-plate--extra"
       :bonus="props.bonuses[2]"

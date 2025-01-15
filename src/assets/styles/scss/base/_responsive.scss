@@ -5,14 +5,14 @@ html,
 body {
   $rem-base: 16px;
 
-  font-size: clamp(10px, calc-root-font-size(390px, 844px), 16px);
+  font-size: clamp(10px, calc-root-font-size(390px, 844px), 18px);
 
   @include tablet-landscape {
-    font-size: $rem-base;
+    font-size: $rem-base !important;
   }
 
-  @include tablet-up {
-    font-size: 20px;
+  @include tablet-only {
+    font-size: 23px;
   }
 
   @include mobile-landscape {
@@ -20,6 +20,14 @@ body {
   }
 
   @include laptop-up {
-    font-size: $rem-base;
+    font-size: clamp(10px, calc-root-font-size(1024px, 768px, 12px), $rem-base);
+  }
+
+  @include extra-desktop-up {
+    font-size: clamp(10px, calc-root-font-size(1440px, 900px, 14px), 36px);
+  }
+
+  @include critial-laptop-height {
+    font-size: clamp(10px, calc-root-font-size(390px, 844px), 18px);
   }
 }

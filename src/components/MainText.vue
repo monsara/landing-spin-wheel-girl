@@ -25,9 +25,15 @@ const props = defineProps({
   display: flex;
   flex-flow: column;
   align-items: center;
-
   font-size: px-to-rem(30px);
   line-height: math.div(30, 32);
   color: $color-2;
+  animation: growText 2s ease-in-out infinite alternate;
+}
+
+@keyframes growText {
+  to {
+    transform: scale(1.05);
+  }
 }
 </style>

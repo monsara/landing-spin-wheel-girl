@@ -1,5 +1,5 @@
 <script setup>
-import PromoBonus from '@/components/PromoBonus.vue'
+import Bonus from '@/components/Bonus.vue'
 
 const props = defineProps({
   tag: {
@@ -32,7 +32,7 @@ const props = defineProps({
       />
     </div>
 
-    <PromoBonus :value="props.bonus.value" :name="props.bonus.name" tag="div" />
+    <Bonus :value="props.bonus.value" :name="props.bonus.name" tag="div" />
   </component>
 </template>
 

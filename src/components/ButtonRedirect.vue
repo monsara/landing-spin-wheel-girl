@@ -39,7 +39,7 @@ $btn-text-color: #1a1a1a;
   z-index: 999;
   display: flex;
   width: px-to-rem(224px);
-  height: px-to-rem(50px);
+  height: px-to-rem(57px);
 
   justify-content: center;
   align-items: center;

@@ -151,7 +151,7 @@
 
 // Очень большие экраны (1441px и больше)
 @mixin extra-desktop-up {
-  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1441'))) {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1440'))) {
     @content;
   }
 }
@@ -177,7 +177,7 @@
 }
 
 // Мобильные устройства и небольшие планшеты (1025px-1280px)
-@mixin laptop-small-desktop-only {
+@mixin laptop-only {
   @include breakpoint-between(
     px-to-em(ss-var($breakpoints, '1025')),
     px-to-em(ss-var($breakpoints, '1280'))

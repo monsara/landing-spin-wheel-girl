@@ -1,8 +1,8 @@
 <script setup>
-import PromoBonusPanelList from '@/components/PromoBonusPanelList.vue'
-import PromoBadgetText from '@/components/PromoBadgetText.vue'
-import PromoMainText from '@/components/PromoMainText.vue'
-import CtaBtn from '@/components/CtaBtn.vue'
+import BonusPanelList from '@/components/BonusPanelList.vue'
+import BadgetText from '@/components/BadgedText.vue'
+import MainText from '@/components/MainText.vue'
+import ActionButton from '@/components/ButtonRedirect.vue'
 import { useViewportWidth } from '@/composables/useViewportWidth.js'
 
 const { viewportWidth } = useViewportWidth()
@@ -18,21 +18,21 @@ const props = defineProps({
 <template>
   <section
     :class="[
-      'bonus-panel',
-      { 'bonus-panel--half-left-offset': viewportWidth < 490 }
+      'bonus-panel'
+      // { 'bonus-panel--half-left-offset': viewportWidth < 490 }
     ]"
   >
     <header class="bonus-panel__header">
       <h2 class="bonus-panel__title">
-        <PromoBadgetText tag="span">Забирай</PromoBadgetText>
-        <PromoMainText tag="span">Виграш</PromoMainText>
+        <BadgetText tag="span">Забирай</BadgetText>
+        <MainText tag="span">Виграш</MainText>
       </h2>
     </header>
 
-    <PromoBonusPanelList :bonuses="props.bonuses" />
+    <BonusPanelList :bonuses="props.bonuses" />
 
     <footer class="bonus-panel__footer">
-      <CtaBtn>Забрати</CtaBtn>
+      <ActionButton>Забрати</ActionButton>
     </footer>
   </section>
 </template>
@@ -116,7 +116,6 @@ const props = defineProps({
       position: fixed;
       bottom: px-to-rem(35px);
       left: 0;
-
       display: flex;
       width: 100%;
       justify-content: center;

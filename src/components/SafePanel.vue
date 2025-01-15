@@ -1,7 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps({
+  tag: {
+    type: String,
+    default: 'footer'
+  }
+})
+</script>
 
 <template>
-  <footer>
+  <component :is="props.tag">
     <ul class="safe-panel">
       <li class="safe-panel__item">
         <img
@@ -49,7 +56,7 @@
         />
       </li>
     </ul>
-  </footer>
+  </component>
 </template>
 
 <style lang="scss">

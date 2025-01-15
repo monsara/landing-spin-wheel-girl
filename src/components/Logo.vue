@@ -1,9 +1,20 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  tag: {
+    type: String,
+    default: 'img'
+  },
+  alt: {
+    type: String,
+    default: 'Логотип Прематч'
+  }
+})
+</script>
 
 <template>
-  <h1 class="logo">
+  <component :is="props.tag" :alt="props.alt" class="logo">
     <slot></slot>
-  </h1>
+  </component>
 </template>
 
 <style lang="scss">
@@ -15,7 +26,8 @@
   height: px-to-rem(30px);
   margin: 0;
 
-  img {
+  img,
+  svg {
     display: block;
     width: 100%;
     max-width: 100%;
