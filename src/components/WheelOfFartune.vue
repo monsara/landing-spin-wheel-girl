@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useMediaQuery } from '@/composables/useMedia.js'
 import { useDynamicOffset } from '@/composables/useDynamicOffset'
 
@@ -92,10 +92,9 @@ const spinWheel = () => {
 
     if (!spinButtonRef.value) return
 
-    if (spinButtonRef.value.classList.contains('pulse')) {
-      spinButtonRef.value.classList.remove('pulse')
-    } else {
+    if (currentSpin <= 2) {
       spinButtonRef.value.classList.add('pulse')
+      setTimeout(() => spinButtonRef.value.classList.remove('pulse'), 3000)
     }
 
     if (currentSpin === 1) {
@@ -386,7 +385,6 @@ onMounted(() => {
     align-items: center;
     font-family: $font-1;
     font-weight: bold;
-    font-style: italic;
     font-size: clamp(16px, px-to-vh(20, 900), 20px);
     line-height: 1;
     color: $color-2;
@@ -499,7 +497,7 @@ onMounted(() => {
   animation: none;
 
   &.pulse {
-    animation: pulse-counter 1.5s ease-in-out 0.3s infinite;
+    animation: pulse-counter 1.5s ease-in-out 0.3s;
   }
 }
 
@@ -514,7 +512,6 @@ onMounted(() => {
 
   font-family: $font-1;
   font-weight: bold;
-  font-style: italic;
   font-size: px-to-rem(26px);
   line-height: 1;
 
@@ -545,8 +542,14 @@ onMounted(() => {
   0% {
     scale: 1;
   }
+  25% {
+    scale: 1.05;
+  }
   50% {
-    scale: 0.95;
+    scale: 1;
+  }
+  75% {
+    scale: 1.05;
   }
   100% {
     scale: 1;

@@ -65,7 +65,6 @@ const measurementUnit = computed(() => {
     display: flex;
     font-size: px-to-rem(20px);
     line-height: 1;
-    font-style: italic;
     font-weight: 900;
     color: #c4f221;
 
@@ -78,7 +77,6 @@ const measurementUnit = computed(() => {
     font-size: px-to-rem(9px);
     font-family: $font-1;
     line-height: 1;
-    font-style: italic;
     font-weight: 900;
 
     @include laptop-up {

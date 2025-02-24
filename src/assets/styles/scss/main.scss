@@ -1,5 +1,5 @@
-@use 'abstracts' as *;
-@use 'base' as *;
+@use "abstracts" as *;
+@use "base" as *;
 
 /* ======== */
 /* Main CSS */
@@ -23,8 +23,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   background-color: #292929;
-  background-image: url('@/assets/images/bg-lighting-dark.webp'),
-    url('@/assets/images/bg-lighting-light-mobile.webp'),
+  background-image: url("@/assets/images/bg-lighting-dark.webp"), url("@/assets/images/bg-lighting-light-mobile.webp"),
     linear-gradient(180deg, #0c0c0c 0%, #1d1d1d 100%);
   background-size: calc-rel-width(561px, 390px), calc-rel-width(407px, 390px);
   background-position:
@@ -35,8 +34,7 @@ body {
 
   @include laptop-up {
     background-color: #8034fd;
-    background-image: url('@/assets/images/bg-img-wide.webp'),
-      url('@/assets/images/right-deecor-img.webp');
+    background-image: url("@/assets/images/bg-img-wide.webp"), url("@/assets/images/right-deecor-img.webp");
     background-size:
       calc-rel-width(887px, 1440px) 100%,
       contain;
@@ -46,8 +44,7 @@ body {
 
   @include critial-laptop-height {
     background-color: #292929;
-    background-image: url('@/assets/images/bg-lighting-dark.webp'),
-      url('@/assets/images/bg-lighting-light-mobile.webp'),
+    background-image: url("@/assets/images/bg-lighting-dark.webp"), url("@/assets/images/bg-lighting-light-mobile.webp"),
       linear-gradient(180deg, #0c0c0c 0%, #1d1d1d 100%);
     background-size: calc-rel-width(561px, 390px), calc-rel-width(407px, 390px);
     background-position:
@@ -61,4 +58,14 @@ body {
 .wrapper {
   position: relative;
   overflow: hidden;
+}
+
+/* Prevent scroll from ad iframes */
+iframe[src*="googlesyndication"],
+iframe[src*="safeframe"] {
+  position: fixed !important;
+  overflow: hidden !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
