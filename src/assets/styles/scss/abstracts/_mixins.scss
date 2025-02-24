@@ -1,7 +1,7 @@
-@use 'variables' as *;
-@use 'placeholders' as *;
-@use 'functions' as *;
-@use 'functions' as *;
+@use "variables" as *;
+@use "placeholders" as *;
+@use "functions" as *;
+@use "functions" as *;
 
 // ========================================== //
 // Generate CSS Variables from Sass Variables //
@@ -33,18 +33,18 @@
 //   @include generate-css-vars($variables);
 // }
 
-@mixin generate-css-vars($variables, $prefix: '') {
+@mixin generate-css-vars($variables, $prefix: "") {
   $new-key: null;
 
   @each $key, $value in $variables {
     // Создаем новый ключ с префиксом
-    @if $prefix == '' {
+    @if $prefix == "" {
       $new-key: $key;
     } @else {
       $new-key: #{$prefix}-#{$key};
     }
 
-    @if type-of($value) == 'map' {
+    @if type-of($value) == "map" {
       // Рекурсивно обрабатываем вложенные карты
       @include generate-css-vars($value, $new-key);
     } @else {
@@ -102,14 +102,14 @@
 }
 
 @mixin mobile-landscape {
-  @media (max-width: px-to-em(ss-var($breakpoints, '1024'))) and (max-height: px-to-em(ss-var($breakpoints, '480'))) and (orientation: landscape),
-    (max-width: px-to-em(ss-var($breakpoints, '1024'))) and (max-height: px-to-em(ss-var($breakpoints, '480'))) and (orientation: landscape) and (pointer: fine) {
+  @media (max-width: px-to-em(ss-var($breakpoints, "1024"))) and (max-height: px-to-em(ss-var($breakpoints, "480"))) and (orientation: landscape),
+    (max-width: px-to-em(ss-var($breakpoints, "1024"))) and (max-height: px-to-em(ss-var($breakpoints, "480"))) and (orientation: landscape) and (pointer: fine) {
     @content;
   }
 }
 
 @mixin tablet-landscape {
-  @media (max-width: px-to-em(ss-var($breakpoints, '1024'))) and (max-height: px-to-em(ss-var($breakpoints, '768'))) and (orientation: landscape) and (pointer: coarse) {
+  @media (max-width: px-to-em(ss-var($breakpoints, "1024"))) and (max-height: px-to-em(ss-var($breakpoints, "768"))) and (orientation: landscape) and (pointer: coarse) {
     @content;
   }
 }
@@ -123,96 +123,84 @@
 }
 
 @mixin small-mobile {
-  @include breakpoint-max(px-to-em(ss-var($breakpoints, '360'))) {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, "360"))) {
     @content;
   }
 }
 
 // Большие планшеты и планшеты в альбомной ориентации (768px и больше)
 @mixin tablet-up {
-  @include breakpoint-min(px-to-em(ss-var($breakpoints, '768'))) {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, "768"))) {
     @content;
   }
 }
 
 // Мобильные устройства и небольшие планшеты (1025px и больше)
 @mixin laptop-up {
-  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1025'))) {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, "1025"))) {
     @content;
   }
 }
 
 // Большие планшеты и ноутбуки (1281px и больше)
 @mixin desktop-up {
-  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1281'))) {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, "1281"))) {
     @content;
   }
 }
 
 // Очень большие экраны (1441px и больше)
 @mixin extra-desktop-up {
-  @include breakpoint-min(px-to-em(ss-var($breakpoints, '1440'))) {
+  @include breakpoint-min(px-to-em(ss-var($breakpoints, "1440"))) {
     @content;
   }
 }
 
 // Миксин для Small Devices (481px - 767px)
 @mixin small-mobile-only {
-  @include breakpoint-between(
-    px-to-em(ss-var($breakpoints, '481')),
-    px-to-em(ss-var($breakpoints, '768'))
-  ) {
+  @include breakpoint-between(px-to-em(ss-var($breakpoints, "481")), px-to-em(ss-var($breakpoints, "768"))) {
     @content;
   }
 }
 
 // Большие планшеты и планшеты в альбомной ориентации (768px-1024px)
 @mixin tablet-only {
-  @include breakpoint-between(
-    px-to-em(ss-var($breakpoints, '769')),
-    px-to-em(ss-var($breakpoints, '1024'))
-  ) {
+  @include breakpoint-between(px-to-em(ss-var($breakpoints, "769")), px-to-em(ss-var($breakpoints, "1024"))) {
     @content;
   }
 }
 
 // Мобильные устройства и небольшие планшеты (1025px-1280px)
 @mixin laptop-only {
-  @include breakpoint-between(
-    px-to-em(ss-var($breakpoints, '1025')),
-    px-to-em(ss-var($breakpoints, '1280'))
-  ) {
+  @include breakpoint-between(px-to-em(ss-var($breakpoints, "1025")), px-to-em(ss-var($breakpoints, "1280"))) {
     @content;
   }
 }
 
 // Большие планшеты и ноутбуки (1281px-1440px)
 @mixin large-desktop-only {
-  @include breakpoint-between(
-    px-to-em(ss-var($breakpoints, '1281')),
-    px-to-em(ss-var($breakpoints, '1440'))
-  ) {
+  @include breakpoint-between(px-to-em(ss-var($breakpoints, "1281")), px-to-em(ss-var($breakpoints, "1440"))) {
     @content;
   }
 }
 
 // Большие планшеты и ноутбуки (1281px-1440px)
 @mixin large-desktop-down {
-  @include breakpoint-max(px-to-em(ss-var($breakpoints, '1280'))) {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, "1280"))) {
     @content;
   }
 }
 
 // Мобильные устройства и небольшие планшеты (1025px-1280px)
 @mixin laptop-down {
-  @include breakpoint-max(px-to-em(ss-var($breakpoints, '1024'))) {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, "1024"))) {
     @content;
   }
 }
 
 // Большие планшеты и планшеты в альбомной ориентации (768px-1024px)
 @mixin tablet-down {
-  @include breakpoint-max(px-to-em(ss-var($breakpoints, '768'))) {
+  @include breakpoint-max(px-to-em(ss-var($breakpoints, "768"))) {
     @content;
   }
 }
@@ -222,14 +210,14 @@
 // ========== //
 @mixin font-sizes($h1, $h2, $h3, $h4, $p) {
   $font-sizes: (
-    'h1': $h1,
-    'h2': $h2,
-    'h3': $h3,
-    'h4': $h4,
-    'p': $p
+    "h1": $h1,
+    "h2": $h2,
+    "h3": $h3,
+    "h4": $h4,
+    "p": $p
   );
   @each $tag, $size in $font-sizes {
-    @if $tag== 'p' {
+    @if $tag== "p" {
       #{$tag},
       span,
       strong,
@@ -249,38 +237,23 @@
 // ========= //
 // Font Face //
 // ========= //
-@mixin font-face(
-  $name,
-  $path,
-  $weight: null,
-  $style: null,
-  $exts: eot woff2 woff ttf svg,
-  $display: swap
-) {
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg, $display: swap) {
   $src: null;
 
   $extmods: (
-    eot: '?',
-    svg: '#' + str-replace($name, ' ', '_')
+    eot: "?",
+    svg: "#" + str-replace($name, " ", "_")
   );
 
   $formats: (
-    otf: 'opentype',
-    ttf: 'truetype'
+    otf: "opentype",
+    ttf: "truetype"
   );
 
   @each $ext in $exts {
-    $extmod: if(
-      map-has-key($extmods, $ext),
-      $ext + map-get($extmods, $ext),
-      $ext
-    );
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
     $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
-    $src: append(
-      $src,
-      url(quote($path + '.' + $extmod)) format(quote($format)),
-      comma
-    );
+    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
   }
 
   @font-face {
@@ -296,7 +269,7 @@
   @font-face {
     font-family: quote($font-name);
     // src: url('../fonts/' + $file-name + '.ttf') format('truetype');
-    src: url('@/assets/fonts/' + $file-name + '.ttf') format('truetype');
+    src: url("@/assets/fonts/" + $file-name + ".ttf") format("truetype");
     font-weight: $font-weight;
     font-style: $font-style;
     font-display: swap;
@@ -306,18 +279,7 @@
 // ============== //
 // Button styling //
 // ============== //
-@mixin button(
-  $width,
-  $height,
-  $bg-color,
-  $font-color,
-  $font-size,
-  $font-weight,
-  $border-radius,
-  $border-size,
-  $border-type,
-  $border-color
-) {
+@mixin button($width, $height, $bg-color, $font-color, $font-size, $font-weight, $border-radius, $border-size, $border-type, $border-color) {
   width: $width;
   height: $height;
   background: $bg-color;
@@ -344,15 +306,12 @@
 // ======= //
 // Overlay //
 // ======= //
-@mixin overlay(
-  $z-index: -1,
-  $background: linear-gradient(0deg, rgb(0 0 0 / 0.5), rgb(0 0 0 / 0))
-) {
+@mixin overlay($z-index: -1, $background: linear-gradient(0deg, rgb(0 0 0 / 0.5), rgb(0 0 0 / 0))) {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     z-index: $z-index;
@@ -363,22 +322,14 @@
 // =============== //
 // Gradient Shadow //
 // =============== //
-@mixin gradient-shadow(
-  $deg,
-  $color-1,
-  $color-2,
-  $z-index: -1,
-  $blur-1,
-  $blur-2,
-  $blur-opacity: 0.5
-) {
+@mixin gradient-shadow($deg, $color-1, $color-2, $z-index: -1, $blur-1, $blur-2, $blur-opacity: 0.5) {
   background: linear-gradient($deg, $color-1, $color-2);
   position: relative;
   box-shadow: unset;
   isolation: isolate;
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     z-index: $z-index;
@@ -415,15 +366,7 @@
 // ============================== //
 // After & Before pseudo elements //
 // ============================== //
-@mixin pseudo-elem(
-  $location: before,
-  $content: '',
-  $position: relative,
-  $top: 0,
-  $right: 0,
-  $bottom: 0,
-  $left: 0
-) {
+@mixin pseudo-elem($location: before, $content: "", $position: relative, $top: 0, $right: 0, $bottom: 0, $left: 0) {
   &:#{$location} {
     content: $content;
     position: $position;
@@ -435,15 +378,7 @@
   }
 }
 // For checkboxes and radio buttons
-@mixin pseudo-elem-checked(
-  $location: before,
-  $content: '',
-  $position: relative,
-  $top: 0,
-  $right: 0,
-  $bottom: 0,
-  $left: 0
-) {
+@mixin pseudo-elem-checked($location: before, $content: "", $position: relative, $top: 0, $right: 0, $bottom: 0, $left: 0) {
   &:checked:#{$location} {
     content: $content;
     position: $position;
