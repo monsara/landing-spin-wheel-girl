@@ -39,15 +39,23 @@ const props = defineProps({
   min-height: 100dvh;
 
   background: $color-1;
-  opacity: 0.9;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  &.show {
+    opacity: 0.9;
+  }
 }
 
 .modal {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, calc(-50% + px-to-rem(10px)));
+  transform: translate(-50%, calc(-50% + px-to-rem(10px))) scale(0.9);
   z-index: 1000;
+
+  opacity: 0;
+  animation: modalAppear 0.4s ease-out forwards;
 
   &::before,
   &::after {
@@ -89,6 +97,17 @@ const props = defineProps({
   100% {
     transform: scale(1.3);
     opacity: 1;
+  }
+}
+
+@keyframes modalAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + px-to-rem(10px))) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, calc(-50% + px-to-rem(10px))) scale(1);
   }
 }
 </style>
